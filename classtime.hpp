@@ -13,7 +13,6 @@ class ClassTime
 
 	public:
 		ClassTime (std::string days = "", std::string times = "");
-		ClassTime(std::string days, std::string time);
 		bool MatchesSearch(int day, int beginHour, int beginMinute, int endHour, int endMinute);
 		friend std::ostream& operator<<(std::ostream& os, const ClassTime& ct);
 	private:
