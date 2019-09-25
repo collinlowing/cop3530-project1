@@ -60,6 +60,12 @@ void ClassTime::SetTime (std::string times)
 	}
 }
 
+bool ClassTime::MatchesSearch(int day, int beginHour, int beginMinute, int endHour, int endMinute)
+{
+
+	return false;
+}
+
 std::ostream& operator<<(std::ostream& os, const ClassTime& ct)
 {
 	bool hasOtherDay = false;

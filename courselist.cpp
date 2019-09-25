@@ -1,5 +1,7 @@
 #include"courselist.hpp"
 
+
+
 CourseList::CourseList(std::string fileName)
 {
 	this->fileName = fileName;
