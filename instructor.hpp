@@ -13,6 +13,7 @@ class Instructor
     public:
         Instructor();
         Instructor(std::string nameData);
+		bool MatchesInstructorSearch(std::string searchName);
         friend std::ostream& operator<<(std::ostream& output, const Instructor& i);
 };
 
