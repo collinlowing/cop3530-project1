@@ -15,10 +15,14 @@ class CourseList
         std::ifstream list;
         int numClasses;
         std::string * classes;
-        Course course[5];
+		int * enrolledID;
+        Course * course;
     public:
-        CourseList();
-        void ReadFile();
+        CourseList(std::string fileName);
+		~CourseList();
+        std::string GetAllCourses();
+		std::string GetMyCourses();
+		bool Enroll(int ID);
         void ParseList();
         void DoubleArray();
 };

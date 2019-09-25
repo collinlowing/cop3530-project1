@@ -1,39 +1,69 @@
 #include"courselist.hpp"
 
-CourseList::CourseList()
+CourseList::CourseList(std::string fileName)
 {
+	this->fileName = fileName;
     numClasses = 5;
     classes = new std::string[numClasses];
+	course = new Course[numClasses];
+	enrolledID = new int[numClasses];
 }
 
-void CourseList::ReadFile()
+CourseList::~CourseList()
 {
-    do
-    {
-        std::cout << "Input the course data file name:" << std::endl;
-        std::cin  >> fileName;
-        list.open(fileName);
-        if(!list.is_open())
-        {
-            std::cout << "ERROR: file could not be opened \n";
-            std::cout << "Please try again." << std::endl;
-        }
-    } 
-    while (!list.is_open());
-    
-    int i = 0;
-    while(!list.eof())
-    {
-        if(numClasses == i + 1)
-        {
-            DoubleArray();
-        }
-        std::getline(list, classes[i]);
+	delete [] classes;
+	delete [] course;
+	delete [] enrolledID;
+}
 
-        
-    }
+std::string CourseList::GetAllCourses()
+{
+	int lineNum = 0;
+	std::string courseList;
+	
+	do
+	{
+		list.open(fileName);
+		if (!list.is_open())
+		{
+			std::cout << "ERROR: file could not be opened"	<< std::endl;
+			std::cout << "Please try again."				<< std::endl;
+			std::cout << "Input the course data file name:"	<< std::endl
+															<< std::endl;
+			
+			std::cin  >> fileName;
+		}
+	} 
+	while (!list.is_open());
 
-    list.close();
+	while (!list.eof())
+	{
+		if (numClasses >= lineNum)
+			DoubleArray();
+
+		std::getline(list, classes[lineNum]);
+
+		courseList += classes[lineNum];
+		courseList += "\n";
+
+		lineNum++;
+	}
+	std::cout << courseList;
+	return courseList;
+}
+
+std::string CourseList::GetMyCourses()
+{
+	
+	return "";
+}
+
+bool CourseList::Enroll(int ID)
+{
+	//for(int i = 0; i < numClasses; i++)
+	//if(ID == enrolledID[])
+	//course[]
+	return false;
 }
 
 void CourseList::ParseList()

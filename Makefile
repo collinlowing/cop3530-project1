@@ -1,7 +1,8 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -ftest-coverage -fprofile-arcs
 
-OBJECTS = # file1.o
+OBJECTS = classtime.o instructor.o course.o courselist.o
+
 
 main: main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^

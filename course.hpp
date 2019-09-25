@@ -13,12 +13,13 @@ class Course
     private:
         std::string coursePrefix;
         int courseNumber;
-        Instructor instructor;
+        Instructor * instructor;
         int seatsAvailable;
         int maxSeats;
-        ClassTime meetingTime;
+        ClassTime * meetingTime;
     public:
         Course();
+		~Course();
         Course(std::string courseDetails);
         bool MatchesCourseNumberSearch(int courseNumber);
         bool Enroll();
