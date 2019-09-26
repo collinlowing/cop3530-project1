@@ -9,6 +9,10 @@ CourseList::CourseList(std::string fileName)
     classes = new std::string[numClasses];
 	course = new Course[numClasses];
 	enrolledID = new int[numClasses];
+	enrolledID[0] = -1;
+
+	courseID = new int[numClasses];
+	enrolledNum = 0;
 }
 
 CourseList::~CourseList()
@@ -16,6 +20,7 @@ CourseList::~CourseList()
 	delete [] classes;
 	delete [] course;
 	delete [] enrolledID;
+	delete [] courseID;
 }
 
 std::string CourseList::GetAllCourses()
@@ -49,6 +54,8 @@ std::string CourseList::GetAllCourses()
 		{
 			course[lineNum] = Course(classes[lineNum]);
 
+			courseID[lineNum] = lineNum;
+
 			courseList << "ID " << lineNum << ": " << course[lineNum] << std::endl;
 		}
 			lineNum++;
@@ -59,7 +66,23 @@ std::string CourseList::GetAllCourses()
 
 std::string CourseList::GetMyCourses()
 {
-	return "";
+	std::ostringstream myCourses;
+
+	if (enrolledID[0] == -1)
+		myCourses << "You are not enrolled in any courses\n";
+
+	for (int i = 0; i < enrolledNum; i++)
+	{
+		for (int j = 0; j < numClasses; j++)
+		{
+			 if (courseID[j] == enrolledID[i])
+				{
+					myCourses << "ID " << courseID[j] << ": " << course[j] << std::endl;
+				}
+		}
+	}
+	
+	return myCourses.str();
 }
 
 std::string CourseList::InstructorSearch(std::string searchName)
@@ -79,10 +102,40 @@ std::string CourseList::PrefixSearch(std::string prefix)
 
 bool CourseList::Enroll(int ID)
 {
-	//for(int i = 0; i < numClasses; i++)
-	//if(ID == enrolledID[])
-	//course[]
-	return false;
+	int i = 0;
+	int j = 0;
+	
+	// Search for courseID match index.
+	while(j < numClasses)
+	{
+		if (courseID[j] == ID)
+		{
+			break;
+		}
+		else
+			j++;
+	}
+	/*
+	while (i < numClasses)
+	{
+		// Search for course number index that matches.
+		if (course[i].MatchesCourseNumberSearch(courseID[j]))
+		{
+			break;
+		}
+		else
+			i++;
+	}
+	*/
+
+	if ((enrolledID[i] != ID) && course[i].Enroll())
+	{
+		enrolledID[enrolledNum] = ID;
+		enrolledNum++;
+		return true;
+	}
+	else
+		return false;
 }
 
 void CourseList::DoubleArray()

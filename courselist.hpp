@@ -14,7 +14,9 @@ class CourseList
         std::string fileName;
         std::ifstream list;
         int numClasses;
+		int enrolledNum;
         std::string * classes;
+		int * courseID;
 		int * enrolledID;
         Course * course;
     public:
@@ -25,7 +27,6 @@ class CourseList
         std::string InstructorSearch(std::string searchName);
         std::string PrefixSearch(std::string prefix);
 		bool Enroll(int ID);
-        void ParseList();
         void DoubleArray();
 };
 

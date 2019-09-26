@@ -53,9 +53,12 @@ std::string Course::CreateCourse(std::string)
 
 bool Course::MatchesCourseNumberSearch(int courseNumber)
 {
-	if(this->courseNumber == courseNumber)
-
-    return false;
+	if (this->courseNumber == courseNumber)
+	{
+		return true;
+	}
+	else
+		return false;
 }
 
 bool Course::MatchesPrefixSearch(std::string coursePrefix)
@@ -77,7 +80,7 @@ bool Course::Enroll()
 		return false;
 	else
 	{
-		--seatsAvailable;
+		seatsAvailable--;
 		return true;
 	}
     	
