@@ -6,16 +6,15 @@ Instructor::Instructor()
 {
     firstName = "Crazy";
     lastName = "George";
+	
 }
 
 Instructor::Instructor(std::string nameData)
 {
         std::istringstream is(nameData);
         
-        std::getline(is, lastName, ",");
-        std::getline(is, firstName, ",");
-
-       
+        std::getline(is, lastName, ',');
+        std::getline(is, firstName, ',');
 }
 
 bool Instructor::MatchesInstructorSearch(std::string searchName)

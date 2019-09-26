@@ -4,43 +4,43 @@
 
 Course::Course()
 {
+	meetingTime = ClassTime("1,2,3", "1:00-1:15");
+	instructor = Instructor("Bar,Foo");
     coursePrefix = "CS";
     courseNumber = 1;
     seatsAvailable = 0;
     maxSeats = 0;
 }
 
-Course::~Course()
-{
-	delete instructor;
-	delete meetingTime;
-}
-
 Course::Course(std::string courseDetails)
 {
+	std::string courseNumberString;
+	std::string maxSeatsString;
+	std::string seatsAvailableString;
 	std::string name;
 	std::string days;
 	std::string time;
 
-	std::stringstream ssin(courseDetails);
+	std::stringstream is(courseDetails);
 
-	while (ssin.good())
-	{
-		ssin >> coursePrefix;
-		ssin >> courseNumber;
-		ssin >> maxSeats;
-		ssin >> seatsAvailable;
+	std::getline(is, coursePrefix, ' ');
 
-		ssin >> name;
-		ssin >> days;
-		ssin >> time;
-	}
+	std::getline(is, courseNumberString, ' ');
+	courseNumber = atoi(courseNumberString.c_str()); // cast to int
 
-	delete instructor;
-	delete meetingTime;
+	std::getline(is, name, ' ');
 
-	instructor = new Instructor(name);
-	meetingTime = new ClassTime(days, time);
+	std::getline(is, maxSeatsString, ' ');
+	maxSeats = atoi(maxSeatsString.c_str()); // cast to int
+
+	std::getline(is, seatsAvailableString, ' ');
+	seatsAvailable = atoi(seatsAvailableString.c_str()); // cast to int
+	
+	std::getline(is, days, ' ');
+	std::getline(is, time, ' ');
+
+	instructor = Instructor(name);
+	meetingTime = ClassTime(days, time);
 
 }
 
@@ -58,12 +58,17 @@ bool Course::MatchesCourseNumberSearch(int courseNumber)
     return false;
 }
 
-bool Course::MatchesCourseNumberSearch(std::string coursePrefix)
+bool Course::MatchesPrefixSearch(std::string coursePrefix)
 {
 	if(this->coursePrefix == coursePrefix)
 		return true;
 	else
 		return false;
+}
+
+bool Course::MatchesIntructorSearch(std::string searchName)
+{
+	this->instructor.MatchesInstructorSearch(searchName);
 }
 
 bool Course::Enroll()
@@ -80,13 +85,14 @@ bool Course::Enroll()
 
 std::ostream& operator<<(std::ostream& output, const Course& c)
 {
-	std::ostringstream printCourse;
-	printCourse << c.instructor;
+	output << c.coursePrefix << " " << c.courseNumber << "\n\t" << c.seatsAvailable;
+	
+	if(c.seatsAvailable == 1)
+		output << " seat remaining of ";
+	else
+		output << " seats remaining of ";
 
-	output << c.coursePrefix << " " << c.courseNumber << "\n\t" << c.seatsAvailable << "seats remaining of " << c.maxSeats << ".\n\t" << "Instructor: " << printCourse.str() << ".\n\t";
-
-	printCourse << c.meetingTime;
-	output << printCourse.str();
+	 output << c.maxSeats << ".\n\t" << "Instructor: " << c.instructor << ".\n\t" << c.meetingTime;
 
 	return output;
 }

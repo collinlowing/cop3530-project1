@@ -22,6 +22,8 @@ class CourseList
 		~CourseList();
         std::string GetAllCourses();
 		std::string GetMyCourses();
+        std::string InstructorSearch(std::string searchName);
+        std::string PrefixSearch(std::string prefix);
 		bool Enroll(int ID);
         void ParseList();
         void DoubleArray();

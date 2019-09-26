@@ -5,7 +5,7 @@
 CourseList::CourseList(std::string fileName)
 {
 	this->fileName = fileName;
-    numClasses = 5;
+    numClasses = 5; 										// Note: Seg faults if numClasses == 1
     classes = new std::string[numClasses];
 	course = new Course[numClasses];
 	enrolledID = new int[numClasses];
@@ -21,7 +21,7 @@ CourseList::~CourseList()
 std::string CourseList::GetAllCourses()
 {
 	int lineNum = 0;
-	std::string courseList;
+	std::ostringstream courseList;
 	
 	do
 	{
@@ -45,18 +45,35 @@ std::string CourseList::GetAllCourses()
 
 		std::getline(list, classes[lineNum]);
 
-		courseList += classes[lineNum];
-		courseList += "\n";
+		if(classes[lineNum].find_first_not_of(' ') != std::string::npos)
+		{
+			course[lineNum] = Course(classes[lineNum]);
 
-		lineNum++;
+			courseList << "ID " << lineNum << ": " << course[lineNum] << std::endl;
+		}
+			lineNum++;
 	}
-	std::cout << courseList;
-	return courseList;
+
+	return courseList.str();
 }
 
 std::string CourseList::GetMyCourses()
 {
-	
+	return "";
+}
+
+std::string CourseList::InstructorSearch(std::string searchName)
+{
+	for(int i = 0; i < numClasses; i++)
+	{
+		
+	}
+
+	return "";
+}
+
+std::string CourseList::PrefixSearch(std::string prefix)
+{
 	return "";
 }
 
@@ -66,14 +83,6 @@ bool CourseList::Enroll(int ID)
 	//if(ID == enrolledID[])
 	//course[]
 	return false;
-}
-
-void CourseList::ParseList()
-{
-    for(int i = 0; i < numClasses; i++)
-    {
-
-    }
 }
 
 void CourseList::DoubleArray()
