@@ -24,7 +24,6 @@ class Course
         bool MatchesPrefixSearch(std::string coursePrefix);
         bool MatchesIntructorSearch(std::string searchName);
         bool Enroll();
-        std::string CreateCourse(std::string);
         friend std::ostream& operator<<(std::ostream& output, const Course& c);
 };
 

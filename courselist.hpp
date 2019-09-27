@@ -15,11 +15,11 @@ class CourseList
         std::ifstream list;
         int numClasses;
 		int enrolledNum;
-        std::string * classPrefix;
-        int * classNumber;
-        std::string * classes;
-		unsigned int * courseID;
+        int * courseID;
 		int * enrolledID;
+        int * classNumber;
+        std::string * classPrefix;
+        std::string * classes;
         Course * course;
     public:
         CourseList(std::string fileName);

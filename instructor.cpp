@@ -1,7 +1,7 @@
 #include"instructor.hpp"
 
 
-
+// Initializes first and last name
 Instructor::Instructor()
 {
     firstName = "Crazy";
@@ -9,6 +9,7 @@ Instructor::Instructor()
 	
 }
 
+// Parses instrucotr name
 Instructor::Instructor(std::string nameData)
 {
         std::istringstream is(nameData);
@@ -17,6 +18,7 @@ Instructor::Instructor(std::string nameData)
         std::getline(is, firstName, ',');
 }
 
+// Checks if searched name matches first or last name stored
 bool Instructor::MatchesInstructorSearch(std::string searchName)
 {
 	if (firstName == searchName)

@@ -1,7 +1,7 @@
 #include"courselist.hpp"
 
 
-
+// Constructor
 CourseList::CourseList(std::string fileName)
 {
 	this->fileName = fileName;
@@ -13,10 +13,11 @@ CourseList::CourseList(std::string fileName)
 	enrolledID = new int[numClasses];
 	enrolledID[0] = -1;
 
-	courseID = new unsigned int[numClasses];
+	courseID = new int[numClasses];
 	enrolledNum = 0;
 }
 
+// Destructor
 CourseList::~CourseList()
 {
 	delete [] classes;
@@ -35,6 +36,8 @@ std::string CourseList::GetAllCourses()
 	do
 	{
 		list.open(fileName);
+
+		// Checks if file opened successfully.
 		if (!list.is_open())
 		{
 			std::cout << "ERROR: file could not be opened"	<< std::endl;
@@ -54,6 +57,7 @@ std::string CourseList::GetAllCourses()
 
 		std::getline(list, classes[lineNum]);
 
+		// Checks if the getline is just blank spaces.
 		if(classes[lineNum].find_first_not_of(' ') != std::string::npos)
 		{
 			std::istringstream localList(classes[lineNum]);
@@ -145,6 +149,7 @@ bool CourseList::Enroll(int ID)
 			i++;
 	}
 
+	// Checks if the ID was already enrolled, and matches a real course description.
 	if ((enrolledID[i] != ID) && course[ID].MatchesCourseNumberSearch(classNumber[ID]) && course[ID].MatchesPrefixSearch(classPrefix[ID]))
 	{
 		course[ID].Enroll();
@@ -156,17 +161,48 @@ bool CourseList::Enroll(int ID)
 		return false;
 }
 
+// Double arrays when reaches over numClasses.
 void CourseList::DoubleArray()
 {
     int newSize = numClasses * 2;
-    std::string * temp = new std::string[newSize];
+    std::string * tempClasses = new std::string[newSize];
+	std::string * tempPrefix = new std::string[newSize];
+	int * tempNum = new int[newSize];
+	int * tempID = new int[newSize];
+	int * tempEnrolled = new int[newSize];
+	Course * tempCourse = new Course[newSize];
 
     for(int i = 0; i < numClasses; i++)
     {
-        temp[i] = classes[i];
+        tempClasses[i] = classes[i];
+		tempPrefix[i] = classPrefix[i];
+		tempNum[i] = classNumber[i];
+		tempID[i] = courseID[i];
+		tempEnrolled[i] = enrolledID[i];
+		tempCourse[i] = course[i];
+
     }
     
     delete [] classes;
-    classes = temp;
+	delete [] classPrefix;
+	delete [] classNumber;
+	delete [] courseID;
+	delete [] enrolledID;
+	delete [] course;
+
+    classes = tempClasses;
+	classPrefix = tempPrefix;
+	classNumber = tempNum;
+	courseID = tempID;
+	enrolledID = tempID;
+	course = tempCourse;
+
+	delete [] tempClasses;
+	delete [] tempCourse;
+	delete [] tempEnrolled;
+	delete [] tempID;
+	delete [] tempNum;
+	delete [] tempPrefix;
+
     numClasses = newSize;
 }

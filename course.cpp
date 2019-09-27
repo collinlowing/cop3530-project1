@@ -1,7 +1,7 @@
 #include"course.hpp"
 
 
-
+// Initializes variables to defaults
 Course::Course()
 {
 	meetingTime = ClassTime("1,2,3", "1:00-1:15");
@@ -12,6 +12,7 @@ Course::Course()
     maxSeats = 0;
 }
 
+// Parses course description.
 Course::Course(std::string courseDetails)
 {
 	std::string courseNumberString;
@@ -44,13 +45,6 @@ Course::Course(std::string courseDetails)
 
 }
 
-// FIXME: Figure out what to do with this.
-std::string Course::CreateCourse(std::string)
-{
-
-	return "";
-}
-
 bool Course::MatchesCourseNumberSearch(int courseNumber)
 {
 	if (this->courseNumber == courseNumber)
@@ -71,11 +65,13 @@ bool Course::MatchesPrefixSearch(std::string coursePrefix)
 
 bool Course::MatchesIntructorSearch(std::string searchName)
 {
+	// Calls Instructor search
 	return instructor.MatchesInstructorSearch(searchName);
 }
 
 bool Course::Enroll()
 {
+	// Checks if there is at least 1 avaiable seat.
 	if(seatsAvailable < 1)
 		return false;
 	else
