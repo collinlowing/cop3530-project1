@@ -7,17 +7,21 @@ CourseList::CourseList(std::string fileName)
 	this->fileName = fileName;
     numClasses = 5; 										// Note: Seg faults if numClasses == 1
     classes = new std::string[numClasses];
+	classPrefix = new std::string[numClasses];
+	classNumber = new int[numClasses];
 	course = new Course[numClasses];
 	enrolledID = new int[numClasses];
 	enrolledID[0] = -1;
 
-	courseID = new int[numClasses];
+	courseID = new unsigned int[numClasses];
 	enrolledNum = 0;
 }
 
 CourseList::~CourseList()
 {
 	delete [] classes;
+	delete [] classPrefix;
+	delete [] classNumber;
 	delete [] course;
 	delete [] enrolledID;
 	delete [] courseID;
@@ -52,6 +56,11 @@ std::string CourseList::GetAllCourses()
 
 		if(classes[lineNum].find_first_not_of(' ') != std::string::npos)
 		{
+			std::istringstream localList(classes[lineNum]);
+
+			localList >> classPrefix[lineNum];
+			localList >> classNumber[lineNum];
+
 			course[lineNum] = Course(classes[lineNum]);
 
 			courseID[lineNum] = lineNum;
@@ -87,49 +96,58 @@ std::string CourseList::GetMyCourses()
 
 std::string CourseList::InstructorSearch(std::string searchName)
 {
+	std::ostringstream instructorList;
+
+	bool isMatch;
+
 	for(int i = 0; i < numClasses; i++)
 	{
-		
+		isMatch = course[i].MatchesIntructorSearch(searchName);
+		if(isMatch)
+		{
+			instructorList << "ID " << courseID[i] << ": " << course[i] << std::endl;
+		}
 	}
 
-	return "";
+	return instructorList.str();
 }
 
 std::string CourseList::PrefixSearch(std::string prefix)
 {
-	return "";
+	std::ostringstream prefixList;
+
+	bool isMatch;
+
+	for(int i = 0; i < numClasses; i++)
+	{
+		isMatch = course[i].MatchesIntructorSearch(prefix);
+		if(isMatch)
+		{
+			prefixList << "ID " << courseID[i] << ": " << course[i] << std::endl;
+		}
+	}
+
+	return prefixList.str();
 }
 
 bool CourseList::Enroll(int ID)
 {
 	int i = 0;
-	int j = 0;
 	
-	// Search for courseID match index.
-	while(j < numClasses)
+	// Search for index of the enrolledID if exists.
+	while(i < enrolledNum)
 	{
-		if (courseID[j] == ID)
-		{
-			break;
-		}
-		else
-			j++;
-	}
-	/*
-	while (i < numClasses)
-	{
-		// Search for course number index that matches.
-		if (course[i].MatchesCourseNumberSearch(courseID[j]))
+		if (enrolledID[i] == ID)
 		{
 			break;
 		}
 		else
 			i++;
 	}
-	*/
 
-	if ((enrolledID[i] != ID) && course[i].Enroll())
+	if ((enrolledID[i] != ID) && course[ID].MatchesCourseNumberSearch(classNumber[ID]) && course[ID].MatchesPrefixSearch(classPrefix[ID]))
 	{
+		course[ID].Enroll();
 		enrolledID[enrolledNum] = ID;
 		enrolledNum++;
 		return true;

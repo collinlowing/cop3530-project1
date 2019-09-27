@@ -71,7 +71,7 @@ bool Course::MatchesPrefixSearch(std::string coursePrefix)
 
 bool Course::MatchesIntructorSearch(std::string searchName)
 {
-	this->instructor.MatchesInstructorSearch(searchName);
+	return instructor.MatchesInstructorSearch(searchName);
 }
 
 bool Course::Enroll()

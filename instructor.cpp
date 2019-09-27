@@ -21,7 +21,7 @@ bool Instructor::MatchesInstructorSearch(std::string searchName)
 {
 	if (firstName == searchName)
 		return true;
-	else if (lastName == searchName)
+	if (lastName == searchName)
 		return true;
 	else
 		return false;
