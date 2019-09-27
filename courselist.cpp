@@ -59,7 +59,7 @@ std::string CourseList::GetAllCourses()
 	while (!list.eof())
 	{
 		/* Commenting out to stop segmentation fault from occuring tried to reduce heap load but no success.
-		if (numClasses > lineNum)
+		if (numClasses < lineNum)
 			DoubleArray();
 		*/
 
@@ -141,7 +141,7 @@ std::string CourseList::PrefixSearch(std::string prefix)
 
 	for(int i = 0; i < numClasses; i++)
 	{
-		isMatch = course[i].MatchesIntructorSearch(prefix);
+		isMatch = course[i].MatchesPrefixSearch(prefix);
 		if(isMatch)
 		{
 			prefixList << "ID " << courseID[i] << ": " << course[i] << std::endl;
