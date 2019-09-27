@@ -5,7 +5,7 @@
 CourseList::CourseList(std::string fileName)
 {
 	this->fileName = fileName;
-    numClasses = 5; 										// Note: Seg faults if numClasses == 1
+    numClasses = 10; 										// Note: Seg faults if numClasses == 1
     classes = new std::string[numClasses];
 	classPrefix = new std::string[numClasses];
 	classNumber = new int[numClasses];
@@ -14,6 +14,12 @@ CourseList::CourseList(std::string fileName)
 	enrolledID[0] = -1;
 
 	courseID = new int[numClasses];
+	
+	for(int i = 0; i < numClasses; i++)
+	{
+		courseID[i] = -1;
+	}
+
 	enrolledNum = 0;
 }
 
@@ -52,8 +58,16 @@ std::string CourseList::GetAllCourses()
 
 	while (!list.eof())
 	{
-		if (numClasses >= lineNum)
+		/* Commenting out to stop segmentation fault from occuring tried to reduce heap load but no success.
+		if (numClasses > lineNum)
 			DoubleArray();
+		*/
+
+		if (numClasses > lineNum)
+		{
+			std::cout << "ERROR: Can't handle courselist, too large" << std::endl;
+			exit(1);
+		}
 
 		std::getline(list, classes[lineNum]);
 
@@ -109,6 +123,9 @@ std::string CourseList::InstructorSearch(std::string searchName)
 		isMatch = course[i].MatchesIntructorSearch(searchName);
 		if(isMatch)
 		{
+			if(courseID[i] == -1)
+				return "";
+
 			instructorList << "ID " << courseID[i] << ": " << course[i] << std::endl;
 		}
 	}
@@ -161,48 +178,46 @@ bool CourseList::Enroll(int ID)
 		return false;
 }
 
+
 // Double arrays when reaches over numClasses.
 void CourseList::DoubleArray()
 {
-    int newSize = numClasses * 2;
-    std::string * tempClasses = new std::string[newSize];
-	std::string * tempPrefix = new std::string[newSize];
-	int * tempNum = new int[newSize];
-	int * tempID = new int[newSize];
-	int * tempEnrolled = new int[newSize];
+    int newSize = numClasses + 1;
+	std::string * tempString = new std::string[newSize];
+	int * tempInt = new int[newSize];
+
 	Course * tempCourse = new Course[newSize];
 
     for(int i = 0; i < numClasses; i++)
     {
-        tempClasses[i] = classes[i];
-		tempPrefix[i] = classPrefix[i];
-		tempNum[i] = classNumber[i];
-		tempID[i] = courseID[i];
-		tempEnrolled[i] = enrolledID[i];
+        tempString[i] = classes[i];
+		tempInt[i] = classNumber[i];
 		tempCourse[i] = course[i];
-
     }
     
     delete [] classes;
-	delete [] classPrefix;
 	delete [] classNumber;
-	delete [] courseID;
-	delete [] enrolledID;
 	delete [] course;
 
-    classes = tempClasses;
-	classPrefix = tempPrefix;
-	classNumber = tempNum;
-	courseID = tempID;
-	enrolledID = tempID;
+    classes = tempString;
+	classNumber = tempInt;
 	course = tempCourse;
 
-	delete [] tempClasses;
+	for(int i = 0; i < numClasses; i++)
+    {
+        tempString[i] = classPrefix[i];
+		tempInt[i] = courseID[i];
+    }
+
+	delete [] classPrefix;
+	delete [] courseID;
+
+	classPrefix = tempString;
+	courseID = tempInt;
+
+	delete [] tempString;
 	delete [] tempCourse;
-	delete [] tempEnrolled;
-	delete [] tempID;
-	delete [] tempNum;
-	delete [] tempPrefix;
+	delete [] tempInt;
 
     numClasses = newSize;
 }

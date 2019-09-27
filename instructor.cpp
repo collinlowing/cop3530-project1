@@ -6,7 +6,6 @@ Instructor::Instructor()
 {
     firstName = "Crazy";
     lastName = "George";
-	
 }
 
 // Parses instrucotr name
