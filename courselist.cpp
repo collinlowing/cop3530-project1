@@ -63,7 +63,7 @@ std::string CourseList::GetAllCourses()
 			DoubleArray();
 		*/
 
-		if (numClasses > lineNum)
+		if (numClasses < lineNum)
 		{
 			std::cout << "ERROR: Can't handle courselist, too large" << std::endl;
 			exit(1);
@@ -182,7 +182,7 @@ bool CourseList::Enroll(int ID)
 // Double arrays when reaches over numClasses.
 void CourseList::DoubleArray()
 {
-    int newSize = numClasses + 1;
+    int newSize = numClasses * 2;
 	std::string * tempString = new std::string[newSize];
 	int * tempInt = new int[newSize];
 
